@@ -1,0 +1,16 @@
+<svg width="512" height="512" viewBox="62 108 388 370" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Face Shell armor layer">
+  <defs>
+    <linearGradient id="armorFaceGlass" x1="177" x2="335" y1="276" y2="351" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2E3A55" stop-opacity="0.36"/>
+      <stop offset="0.5" stop-color="#060913" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#151A2A" stop-opacity="0.32"/>
+    </linearGradient>
+    <linearGradient id="armorFaceEdge" x1="177" x2="335" y1="276" y2="351" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CF6" stop-opacity="0.36"/>
+      <stop offset="0.48" stop-color="#67E8F9" stop-opacity="0.58"/>
+      <stop offset="1" stop-color="#2563EB" stop-opacity="0.26"/>
+    </linearGradient>
+  </defs>
+  <path d="M177 276C198 303 224 316 256 316C288 316 314 303 335 276C331 295 321 314 304 329C279 351 233 351 208 329C191 314 181 295 177 276Z" fill="url(#armorFaceGlass)" stroke="url(#armorFaceEdge)" stroke-width="1.8"/>
+  <path d="M194 290C214 307 235 315 256 315C277 315 298 307 318 290" stroke="#C4B5FD" stroke-linecap="round" stroke-opacity="0.3" stroke-width="1.5"/>
+</svg>

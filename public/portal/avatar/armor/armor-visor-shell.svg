@@ -1,0 +1,17 @@
+<svg width="512" height="512" viewBox="62 108 388 370" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Visor Shell armor layer">
+  <defs>
+    <linearGradient id="armorVisorGlass" x1="180" x2="332" y1="187" y2="235" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2E3A55" stop-opacity="0.36"/>
+      <stop offset="0.5" stop-color="#060913" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#151A2A" stop-opacity="0.32"/>
+    </linearGradient>
+    <linearGradient id="armorVisorEdge" x1="180" x2="332" y1="187" y2="235" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CF6" stop-opacity="0.36"/>
+      <stop offset="0.48" stop-color="#67E8F9" stop-opacity="0.58"/>
+      <stop offset="1" stop-color="#2563EB" stop-opacity="0.26"/>
+    </linearGradient>
+  </defs>
+  <path d="M180 215C202 196 229 187 256 187C283 187 310 196 332 215L318 235C297 225 276 221 256 221C236 221 215 225 194 235L180 215Z" fill="url(#armorVisorGlass)" stroke="url(#armorVisorEdge)" stroke-width="1.7"/>
+  <path d="M199 223C218 213 237 208 256 208C275 208 294 213 313 223" stroke="#67E8F9" stroke-linecap="round" stroke-opacity="0.52" stroke-width="1.6"/>
+  <path d="M256 190L273 210L256 232L239 210L256 190Z" fill="rgba(139,92,246,0.34)" stroke="#C4B5FD" stroke-linejoin="round" stroke-width="1.4"/>
+</svg>

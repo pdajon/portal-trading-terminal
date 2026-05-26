@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portal Setup Tray - Fit Options</title>
+    <style>
+      :root {
+        --void: #05060a;
+        --shell: #080d16;
+        --panel: #0d101b;
+        --cyan: #33f5ff;
+        --blue: #3b82f6;
+        --violet: #8b5cf6;
+        --amber: #f59e0b;
+        --radius: 7px;
+        --tray-w: 1392;
+        --tray-h: 657;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 50% -18%, rgba(51, 245, 255, 0.13), transparent 34rem),
+          radial-gradient(circle at 74% -4%, rgba(139, 92, 246, 0.15), transparent 30rem),
+          linear-gradient(180deg, #05060a, #070a12 46%, #04050a);
+        color: rgba(255, 255, 255, 0.9);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      .page {
+        max-width: 1500px;
+        margin: 0 auto;
+        padding: 22px 24px 44px;
+      }
+
+      .intro {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 18px;
+      }
+
+      .eyebrow {
+        margin: 0 0 7px;
+        color: rgba(103, 232, 249, 0.68);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: 28px;
+        line-height: 1.08;
+        letter-spacing: 0;
+      }
+
+      .intro-note {
+        max-width: 610px;
+        color: rgba(255, 255, 255, 0.48);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .ruler {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 12px;
+        border: 1px solid rgba(165, 243, 252, 0.08);
+        border-radius: var(--radius);
+        background: rgba(8, 13, 22, 0.72);
+        padding: 10px 12px;
+        color: rgba(255, 255, 255, 0.48);
+        font-size: 11px;
+      }
+
+      .ruler strong {
+        color: rgba(236, 254, 255, 0.84);
+      }
+
+      .option {
+        margin-bottom: 26px;
+      }
+
+      .option-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 10px;
+      }
+
+      .option-head h2 {
+        color: rgba(255, 255, 255, 0.92);
+        font-size: 18px;
+        line-height: 1.15;
+      }
+
+      .option-head p {
+        max-width: 720px;
+        color: rgba(255, 255, 255, 0.46);
+        font-size: 12px;
+        line-height: 1.45;
+        text-align: right;
+      }
+
+      .tray-frame {
+        width: min(1392px, calc(100vw - 48px));
+        aspect-ratio: 1392 / 657;
+        overflow: hidden;
+        border: 1px solid rgba(103, 232, 249, 0.2);
+        border-radius: var(--radius);
+        background:
+          radial-gradient(circle at 17% 0%, rgba(51, 245, 255, 0.07), transparent 26rem),
+          radial-gradient(circle at 82% 3%, rgba(139, 92, 246, 0.075), transparent 26rem),
+          linear-gradient(180deg, rgba(8, 13, 22, 0.96), rgba(4, 7, 13, 0.98));
+        box-shadow:
+          0 24px 72px rgba(0, 0, 0, 0.38),
+          0 0 0 1px rgba(51, 245, 255, 0.04),
+          inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        clip-path: inset(0 round var(--radius));
+      }
+
+      .tray {
+        display: grid;
+        height: 100%;
+        grid-template-rows: 106px 1fr 72px;
+      }
+
+      .tray-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 22px;
+        padding: 26px 28px 16px;
+      }
+
+      .kicker {
+        margin-bottom: 10px;
+        color: rgba(236, 254, 255, 0.88);
+        font-size: 12px;
+        font-weight: 850;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+      }
+
+      .title {
+        color: rgba(255, 255, 255, 0.94);
+        font-size: 26px;
+        font-weight: 800;
+        line-height: 1.08;
+      }
+
+      .subtitle {
+        margin-top: 10px;
+        max-width: 880px;
+        color: rgba(255, 255, 255, 0.49);
+        font-size: 16px;
+        font-weight: 650;
+        line-height: 1.32;
+      }
+
+      .small-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 28px;
+        white-space: nowrap;
+        border: 1px solid rgba(103, 232, 249, 0.16);
+        border-radius: var(--radius);
+        background: rgba(51, 245, 255, 0.035);
+        padding: 0 12px;
+        color: rgba(207, 250, 254, 0.68);
+        font-size: 10px;
+        font-weight: 850;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: var(--cyan);
+        box-shadow: 0 0 10px rgba(51, 245, 255, 0.68);
+      }
+
+      .tray-content {
+        min-height: 0;
+        padding: 20px 30px 22px;
+      }
+
+      .tray-footer {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.055);
+        padding: 0 30px 24px;
+      }
+
+      button,
+      .button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        border: 1px solid rgba(255, 255, 255, 0.055);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.014);
+        color: rgba(255, 255, 255, 0.74);
+        font-size: 18px;
+        font-weight: 850;
+      }
+
+      .ghost {
+        color: rgba(255, 255, 255, 0.54);
+      }
+
+      .ghost span {
+        margin-right: 10px;
+        color: rgba(255, 255, 255, 0.28);
+      }
+
+      .primary {
+        border-color: rgba(51, 245, 255, 0.26);
+        background: linear-gradient(180deg, rgba(51, 245, 255, 0.13), rgba(59, 130, 246, 0.08));
+        color: rgba(236, 254, 255, 0.92);
+        box-shadow:
+          0 0 18px rgba(51, 245, 255, 0.08),
+          inset 0 1px 0 rgba(255, 255, 255, 0.07);
+      }
+
+      .tag-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        align-content: start;
+      }
+
+      .tag {
+        position: relative;
+        min-height: 76px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.055);
+        border-radius: var(--radius);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.022), rgba(255, 255, 255, 0.01)),
+          rgba(0, 0, 0, 0.13);
+        padding: 15px 16px;
+        color: rgba(255, 255, 255, 0.78);
+        clip-path: inset(0 round var(--radius));
+      }
+
+      .tag.selected {
+        border-color: rgba(51, 245, 255, 0.28);
+        background:
+          radial-gradient(circle at 100% 0%, rgba(51, 245, 255, 0.11), transparent 68%),
+          linear-gradient(180deg, rgba(51, 245, 255, 0.055), rgba(139, 92, 246, 0.026));
+        color: rgba(255, 255, 255, 0.94);
+        box-shadow:
+          0 0 20px rgba(51, 245, 255, 0.075),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .tag strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 18px;
+        line-height: 1.05;
+      }
+
+      .tag span {
+        display: block;
+        color: rgba(255, 255, 255, 0.38);
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1.25;
+      }
+
+      .two-lane {
+        display: grid;
+        height: 100%;
+        grid-template-columns: 355px 1fr;
+        gap: 18px;
+      }
+
+      .insight-rail {
+        border: 1px solid rgba(255, 255, 255, 0.055);
+        border-radius: var(--radius);
+        background:
+          radial-gradient(circle at 20% 0%, rgba(139, 92, 246, 0.11), transparent 70%),
+          rgba(255, 255, 255, 0.018);
+        padding: 18px;
+      }
+
+      .rail-label {
+        color: rgba(196, 181, 253, 0.7);
+        font-size: 10px;
+        font-weight: 850;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .rail-pick {
+        margin-top: 22px;
+        border-left: 1px solid rgba(51, 245, 255, 0.38);
+        padding-left: 14px;
+      }
+
+      .rail-pick strong {
+        display: block;
+        margin-bottom: 9px;
+        color: rgba(255, 255, 255, 0.94);
+        font-size: 25px;
+        line-height: 1.05;
+      }
+
+      .rail-pick span,
+      .rail-copy {
+        color: rgba(255, 255, 255, 0.45);
+        font-size: 13px;
+        font-weight: 650;
+        line-height: 1.45;
+      }
+
+      .compact-list {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        align-content: start;
+      }
+
+      .row-tag {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        gap: 11px;
+        min-height: 54px;
+        border: 1px solid rgba(255, 255, 255, 0.052);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.018);
+        padding: 11px 12px;
+      }
+
+      .row-tag.selected {
+        border-color: rgba(139, 92, 246, 0.36);
+        background:
+          linear-gradient(90deg, rgba(139, 92, 246, 0.11), rgba(51, 245, 255, 0.045)),
+          rgba(255, 255, 255, 0.02);
+      }
+
+      .row-tag b {
+        display: block;
+        margin-bottom: 2px;
+        color: rgba(255, 255, 255, 0.86);
+        font-size: 15px;
+      }
+
+      .row-tag small {
+        color: rgba(255, 255, 255, 0.36);
+        font-size: 10px;
+        font-weight: 750;
+      }
+
+      .marker {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: rgba(139, 92, 246, 0.42);
+      }
+
+      .selected .marker {
+        background: var(--cyan);
+        box-shadow: 0 0 10px rgba(51, 245, 255, 0.74);
+      }
+
+      .command-layout {
+        display: grid;
+        height: 100%;
+        grid-template-columns: minmax(0, 1fr) 300px;
+        gap: 18px;
+      }
+
+      .command-box {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        min-height: 0;
+      }
+
+      .input-line {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        border: 1px solid rgba(51, 245, 255, 0.22);
+        border-radius: var(--radius);
+        background:
+          radial-gradient(circle at 100% 0%, rgba(51, 245, 255, 0.12), transparent 54%),
+          rgba(0, 0, 0, 0.22);
+        padding: 9px;
+        box-shadow:
+          0 0 20px rgba(51, 245, 255, 0.08),
+          inset 0 1px 0 rgba(255, 255, 255, 0.075);
+      }
+
+      .input-line input {
+        width: 100%;
+        border: 0;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.88);
+        outline: none;
+        padding: 11px 12px;
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .input-line input::placeholder {
+        color: rgba(255, 255, 255, 0.34);
+      }
+
+      .input-line .button {
+        min-width: 118px;
+        min-height: 44px;
+        font-size: 14px;
+      }
+
+      .quick-picks {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .quick-pick {
+        min-height: 82px;
+        border: 1px solid rgba(255, 255, 255, 0.055);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.018);
+        padding: 14px;
+      }
+
+      .quick-pick.active {
+        border-color: rgba(51, 245, 255, 0.24);
+        background: rgba(51, 245, 255, 0.05);
+      }
+
+      .quick-pick small {
+        display: block;
+        margin-bottom: 14px;
+        color: rgba(103, 232, 249, 0.62);
+        font-size: 9px;
+        font-weight: 850;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .quick-pick strong {
+        font-size: 16px;
+      }
+
+      .side-note {
+        border: 1px solid rgba(255, 255, 255, 0.052);
+        border-radius: var(--radius);
+        background:
+          radial-gradient(circle at 80% 0%, rgba(245, 158, 11, 0.075), transparent 60%),
+          rgba(255, 255, 255, 0.016);
+        padding: 18px;
+      }
+
+      .side-note h3 {
+        margin-bottom: 14px;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 16px;
+      }
+
+      .side-note p {
+        color: rgba(255, 255, 255, 0.43);
+        font-size: 13px;
+        font-weight: 650;
+        line-height: 1.5;
+      }
+
+      .mini-metrics {
+        display: grid;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .mini-metric {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid rgba(255, 255, 255, 0.052);
+        padding-top: 10px;
+        color: rgba(255, 255, 255, 0.44);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .mini-metric b {
+        color: rgba(236, 254, 255, 0.74);
+      }
+
+      @media (max-width: 900px) {
+        .intro,
+        .option-head {
+          display: block;
+        }
+
+        .intro-note,
+        .option-head p {
+          margin-top: 10px;
+          text-align: left;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="intro">
+        <div>
+          <p class="eyebrow">Portal setup tray</p>
+          <h1>Fit-correct directions</h1>
+        </div>
+        <p class="intro-note">
+          Rebuilt around the screenshot footprint: a wide, shallow command-deck
+          tray, not concept cards. Each option below uses the same container
+          ratio as the actual thesis surface.
+        </p>
+      </header>
+
+      <div class="ruler">
+        <span><strong>Screenshot:</strong> 1582 x 828</span>
+        <span><strong>Thesis tray target:</strong> about 1392 x 657</span>
+        <span><strong>Constraint:</strong> wide/short surface with bottom action band</span>
+      </div>
+
+      <section class="option">
+        <div class="option-head">
+          <h2>Option 1 - Same Structure, Actually Polished</h2>
+          <p>Closest to current implementation. Keeps the grid, but uses the width better: 4 columns, lower row height, softer boxes, less dead air, and a quieter status treatment.</p>
+        </div>
+        <div class="tray-frame">
+          <div class="tray">
+            <header class="tray-header">
+              <div>
+                <div class="kicker">Trade Thesis</div>
+                <div class="title">Tag the setup behind this trade</div>
+                <p class="subtitle">Optional journal context. Portal uses this to compare outcomes and surface which ideas are actually working.</p>
+              </div>
+              <div class="small-status"><span class="dot"></span> Recommended</div>
+            </header>
+            <div class="tray-content">
+              <div class="tag-grid">
+                <div class="tag selected"><strong>Liquidity Sweep</strong><span>Stop run into reversal area</span></div>
+                <div class="tag"><strong>Trend Break</strong><span>Structure shift with momentum</span></div>
+                <div class="tag"><strong>Range Break</strong><span>Break from compression</span></div>
+                <div class="tag"><strong>Retest</strong><span>Confirm level acceptance</span></div>
+                <div class="tag"><strong>Support Bounce</strong><span>Reaction at known demand</span></div>
+                <div class="tag"><strong>Resistance Rejection</strong><span>Supply holds on reclaim failure</span></div>
+                <div class="tag"><strong>Breakout</strong><span>Continuation through level</span></div>
+                <div class="tag"><strong>Reversal</strong><span>Failure and direction flip</span></div>
+                <div class="tag"><strong>Continuation</strong><span>Trend remains intact</span></div>
+                <div class="tag"><strong>News/Event</strong><span>Catalyst-driven entry</span></div>
+              </div>
+            </div>
+            <footer class="tray-footer">
+              <div class="button primary">+ Add custom setup</div>
+              <div class="button ghost"><span>X</span> Skip tag</div>
+            </footer>
+          </div>
+        </div>
+      </section>
+
+      <section class="option">
+        <div class="option-head">
+          <h2>Option 2 - Thesis Rail + Compact Picks</h2>
+          <p>Best use of the wide tray. One left rail explains the selected thesis, while the rest of the width becomes compact, fast-scanning choices.</p>
+        </div>
+        <div class="tray-frame">
+          <div class="tray">
+            <header class="tray-header">
+              <div>
+                <div class="kicker">Trade Thesis</div>
+                <div class="title">What was the trade idea?</div>
+                <p class="subtitle">Pick the setup once. The rail gives meaning without making every option huge.</p>
+              </div>
+              <div class="small-status"><span class="dot"></span> Journal signal</div>
+            </header>
+            <div class="tray-content">
+              <div class="two-lane">
+                <aside class="insight-rail">
+                  <div class="rail-label">Selected thesis</div>
+                  <div class="rail-pick">
+                    <strong>Liquidity Sweep</strong>
+                    <span>Price ran stops into a known level, then accepted back inside range.</span>
+                  </div>
+                  <p class="rail-copy" style="margin-top: 26px;">This keeps the surface useful without turning the tray into a dashboard.</p>
+                </aside>
+                <div class="compact-list">
+                  <div class="row-tag selected"><i class="marker"></i><span><b>Liquidity Sweep</b><small>Stop run + reclaim</small></span></div>
+                  <div class="row-tag"><i class="marker"></i><span><b>Trend Break</b><small>Structure shift</small></span></div>
+                  <div class="row-tag"><i class="marker"></i><span><b>Range Break</b><small>Compression release</small></span></div>
+                  <div class="row-tag"><i class="marker"></i><span><b>Support Bounce</b><small>Demand reaction</small></span></div>
+                  <div class="row-tag"><i class="marker"></i><span><b>Resistance Rejection</b><small>Supply rejection</small></span></div>
+                  <div class="row-tag"><i class="marker"></i><span><b>Retest</b><small>Acceptance check</small></span></div>
+                  <div class="row-tag"><i class="marker"></i><span><b>Breakout</b><small>Level expansion</small></span></div>
+                  <div class="row-tag"><i class="marker"></i><span><b>Reversal</b><small>Directional flip</small></span></div>
+                  <div class="row-tag"><i class="marker"></i><span><b>Continuation</b><small>Trend intact</small></span></div>
+                  <div class="row-tag"><i class="marker"></i><span><b>News/Event</b><small>Catalyst trade</small></span></div>
+                </div>
+              </div>
+            </div>
+            <footer class="tray-footer">
+              <div class="button primary">Capture thesis</div>
+              <div class="button ghost"><span>+</span> Custom setup</div>
+            </footer>
+          </div>
+        </div>
+      </section>
+
+      <section class="option">
+        <div class="option-head">
+          <h2>Option 3 - Command Input + Suggested Setups</h2>
+          <p>Most minimal. Uses the full width as a command surface, with suggestions underneath. Strong fit if you want this moment to feel fast and premium.</p>
+        </div>
+        <div class="tray-frame">
+          <div class="tray">
+            <header class="tray-header">
+              <div>
+                <div class="kicker">Trade Thesis</div>
+                <div class="title">Tag this trade</div>
+                <p class="subtitle">Search, type, or select a setup. Designed for the same tray footprint with much less visual weight.</p>
+              </div>
+              <div class="small-status"><span class="dot"></span> Optional</div>
+            </header>
+            <div class="tray-content">
+              <div class="command-layout">
+                <div class="command-box">
+                  <div class="input-line">
+                    <input value="" placeholder="Search or create setup tag..." aria-label="Search or create setup tag" />
+                    <div class="button primary">Add tag</div>
+                  </div>
+                  <div class="quick-picks">
+                    <div class="quick-pick active"><small>Suggested</small><strong>Liquidity Sweep</strong></div>
+                    <div class="quick-pick"><small>Recent</small><strong>Trend Break</strong></div>
+                    <div class="quick-pick"><small>Common</small><strong>Retest</strong></div>
+                    <div class="quick-pick"><small>Common</small><strong>Reversal</strong></div>
+                    <div class="quick-pick"><small>Setup</small><strong>Support Bounce</strong></div>
+                    <div class="quick-pick"><small>Setup</small><strong>Range Break</strong></div>
+                    <div class="quick-pick"><small>Setup</small><strong>Continuation</strong></div>
+                    <div class="quick-pick"><small>More</small><strong>View all</strong></div>
+                  </div>
+                </div>
+                <aside class="side-note">
+                  <h3>Why this works</h3>
+                  <p>It respects the wide tray by letting the input become the main object. The suggestions stay reachable without filling the entire surface with heavy buttons.</p>
+                  <div class="mini-metrics">
+                    <div class="mini-metric"><span>Visual weight</span><b>Low</b></div>
+                    <div class="mini-metric"><span>Speed</span><b>High</b></div>
+                    <div class="mini-metric"><span>Layout change</span><b>Medium</b></div>
+                  </div>
+                </aside>
+              </div>
+            </div>
+            <footer class="tray-footer">
+              <div class="button primary">Save thesis</div>
+              <div class="button ghost"><span>X</span> Skip tag</div>
+            </footer>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

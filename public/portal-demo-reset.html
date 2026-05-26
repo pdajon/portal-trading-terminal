@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Portal Demo Reset</title>
+    <script>
+      (async () => {
+        const localStorageKeys = [
+          "portal.chart-levels",
+          "portal.chart-line-triggers",
+          "portal.chart-trend-lines",
+          "portal.chart-zones",
+          "portal.active-position",
+          "portal.active-trade-plan",
+          "portal.pending-limit-orders",
+          "portal.min-rr",
+          "portal.discipline-rules",
+          "portal.discipline-tracking",
+          "portal.session-log",
+          "portal.journal",
+          "portal.journal.memoryEvents",
+          "portal.journal-setup-tags",
+          "portal.journal-settings",
+          "portal.baseline-import",
+          "portal.tag-along-rules",
+          "portal.tag-along-execution-records",
+          "portal.magic-trade-market-uses",
+        ];
+        const sessionStorageKeys = ["portal.footer-tab"];
+
+        for (const key of localStorageKeys) {
+          window.localStorage.removeItem(key);
+        }
+
+        for (const key of sessionStorageKeys) {
+          window.sessionStorage.removeItem(key);
+        }
+
+        if ("indexedDB" in window) {
+          await new Promise((resolve) => {
+            const request = window.indexedDB.deleteDatabase("portal-baseline-import-payloads");
+            request.onsuccess = () => resolve();
+            request.onerror = () => resolve();
+            request.onblocked = () => resolve();
+          });
+        }
+
+        window.location.replace("/terminal");
+      })();
+    </script>
+  </head>
+  <body>
+    Resetting Portal demo browser state...
+  </body>
+</html>

@@ -1,0 +1,248 @@
+# Portal Project Audit Report
+
+Date: 2026-05-08  
+Scope: Repository files, docs, app routes, components, API routes, tests, scripts, local `.portal` state, and package setup in this checkout.
+
+## Executive Summary
+
+Portal is currently a local/testnet V1 crypto trading terminal, not just an MVP scaffold. The early README and MVP docs are stale: they still say AI coaching, discipline, and live execution are out of scope, but the codebase now contains real Hyperliquid testnet execution routes, a chart-first terminal shell, Magic Trade automation, deterministic AI Coach warnings, Operator Diagnosis, Journal capture/review, Session Logs, discipline rules, and demo reset tooling.
+
+What is real today: a Next.js 15 / React 19 terminal at `/terminal`, Hyperliquid testnet reads and writes through local Python bridge scripts, BTC/ETH/SOL market data, market execution, some limit/order-zone execution, safety actions, local/server discipline gates, local Journal/Session Log persistence, and a green Node test suite.
+
+What is not real yet: production persistence, real-money Override Bond settlement, external LLM/API AI, TradingView Advanced Charts integration, broad exchange support, full production wallet UX, and full parity of every execution feature across BTC/ETH/SOL. Several mutating routes still validate BTC only even though some newer Magic Trade open-position code supports BTC/ETH/SOL.
+
+The brand/product direction is well documented, but enforcement in code is informal. UI implementation lives largely inside one very large `app-shell.tsx`, so the product is feature-rich but structurally concentrated and fragile.
+
+## Built & Enabled
+
+| Feature | Status | Evidence files | Notes |
+| --- | --- | --- | --- |
+| Next.js app foundation | Built | `package.json`, `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/terminal/page.tsx` | Next.js 15.5.15, React 19, Tailwind, TypeScript, Node 22 scripts. |
+| Terminal route | Built | `src/app/terminal/page.tsx`, `src/components/layout/app-shell.tsx` | Main product surface is `/terminal`; launch docs use `http://localhost:3002/terminal`. |
+| Chart-first shell | Built | `src/components/layout/app-shell.tsx`, `src/features/chart/components/minimal-price-chart.tsx`, `docs/brand/PORTAL_BRAND_BIBLE.md` | Chart is the central surface; footer modes and right rail are integrated around it. |
+| Lightweight Charts implementation | Built | `src/features/chart/components/minimal-price-chart.tsx`, `package.json` | Uses `lightweight-charts`; supports candles, overlays, price lines, zones, chart snapshots. |
+| Hyperliquid testnet chart data | Built | `src/app/api/chart/route.ts`, `src/features/chart/lib/chart-snapshot-request.ts`, `src/features/chart/components/minimal-price-chart.tsx` | REST snapshot plus WebSocket/live fallback; cache and stale-if-error behavior exist. |
+| Supported chart symbols | Built | `src/types/market.ts`, `src/lib/markets/hyperliquid-symbols.ts`, `src/features/chart/lib/hyperliquid-chart-symbols.ts` | BTC-USD, ETH-USD, SOL-USD only. |
+| Timeframes | Built, limited | `src/features/chart/components/timeframe-switcher.tsx` | 1m, 5m, 15m only. |
+| Market metadata/stats/order book/recent trades APIs | Built | `src/app/api/market-metadata/route.ts`, `src/app/api/market-stats/route.ts`, `src/app/api/order-book/route.ts`, `src/app/api/recent-trades/route.ts` | Read-only Hyperliquid testnet info APIs with caching/stale fallback in some routes. |
+| Account/balance display backend | Built | `src/app/api/account/route.ts`, `src/lib/hyperliquid/testnet_account.py`, `src/components/layout/app-shell.tsx` | Shows available-to-trade, side-specific available funds, account value, leverage context. Requires env/runtime. |
+| Market orders | Built/testnet | `src/app/api/execute/route.ts`, `src/lib/hyperliquid/place-market-order.ts`, `src/lib/hyperliquid/testnet_execute.py` | Server discipline gate runs before bridge execution. |
+| Limit orders | Built, BTC-only route validation | `src/app/api/limit-order/route.ts`, `src/lib/hyperliquid/testnet_limit_order.py`, `src/features/execution/limit-order-guard.ts` | Route symbol map includes BTC only; evidence conflicts with broader BTC/ETH/SOL market universe. |
+| Order zones | Built, BTC-only route validation | `src/app/api/order-zone/route.ts`, `src/lib/hyperliquid/testnet_order_zone.py`, `src/features/chart/components/minimal-price-chart.tsx` | Zone-derived ladders exist; route validates BTC only. |
+| Close position | Built/testnet | `src/app/api/close-position/route.ts`, `src/lib/hyperliquid/testnet_close_position.py`, `src/components/layout/app-shell.tsx` | Exchange-backed testnet close flow. |
+| Reduce/partial close | Built/testnet | `src/app/api/reduce-position/route.ts`, `src/lib/hyperliquid/testnet_reduce_position.py`, `src/features/execution/reduce-position-reconciliation.ts` | Percent reduce with reconciliation logic. |
+| Reverse position | Built/testnet | `src/app/api/reverse-position/route.ts`, `src/lib/hyperliquid/testnet_reverse_position.py`, `src/components/layout/app-shell.tsx` | Server gate treats reverse as risk-increasing for new exposure. |
+| Cancel order / cancel all | Built/testnet | `src/app/api/cancel-order/route.ts`, `src/app/api/cancel-all-orders/route.ts`, `src/lib/hyperliquid/testnet_cancel_order.py`, `src/lib/hyperliquid/testnet_cancel_all_orders.py` | `Cancel All Orders` is separate from `Close All`. |
+| Close all exposure | Built/testnet | `src/app/api/close-all/route.ts`, `src/lib/hyperliquid/testnet_close_all.py`, `scripts/reset-demo-state.mjs` | Cancels/removes exposure via testnet bridge; demo reset uses it. |
+| SL/TP protection | Built, BTC-only route validation | `src/app/api/protection/route.ts`, `src/lib/hyperliquid/testnet_protection.py`, `src/components/layout/app-shell.tsx` | Attach/update protection and Session Log capture exist. |
+| Break-even | Built | `src/features/execution/break-even-protection.ts`, `src/components/layout/app-shell.tsx`, `src/features/execution/break-even-protection.test.ts` | Moves stop to entry through protection update flow. |
+| Live position rail | Built | `src/features/chart/components/live-position-rail.tsx`, `src/features/chart/lib/live-position-display.ts`, `src/features/chart/lib/live-position-rail-layout.ts` | Shows live position, PnL, protection state; tests cover display/layout. |
+| Confirmed local rail after fills | Built | `src/features/chart/lib/confirmed-execution-position.ts`, `src/components/layout/app-shell.tsx`, `docs/performance_audit.md` | Optimistic local rail fills gap before slower exchange read reconciliation. |
+| Chart trade plan entry/SL/TP | Built | `src/features/chart/components/minimal-price-chart.tsx`, `src/features/chart/lib/trade-plan-primitive.ts`, `src/types/trade.ts` | Entry/stop/target plan with R:R visualization and drag/edit support. |
+| Horizontal levels and triggers | Built | `src/features/chart/types.ts`, `src/features/chart/components/minimal-price-chart.tsx`, `src/components/layout/app-shell.tsx` | Level context menu can arm/disarm trigger conditions. |
+| Zones / no-trade zones | Built | `src/features/chart/lib/zone-primitive.ts`, `src/features/chart/types.ts`, `src/features/discipline/lib/discipline-risk-gate.ts` | Zones render, can be no-trade, and feed discipline gating. |
+| Trendline rendering/editing | Partially enabled | `src/features/chart/components/minimal-price-chart.tsx`, `src/features/chart/types.ts` | Stored/rendered trendline types exist; custom drawing constant is disabled. See partial section. |
+| Magic Trade structured builder | Built | `src/components/layout/app-shell.tsx`, `src/features/tag-along/lib/tag-along-rules.ts`, `src/features/tag-along/lib/magic-trade-sentence.ts` | Phase builder and sentence tokens are implemented. |
+| Magic Trade conditions | Built, V1-limited | `src/features/tag-along/lib/tag-along-rules.ts` | Touch, crosses above/below, candle closes above/below. Generic `price-crosses-level` parser exists but builder exposes directional cross. |
+| Magic Trade actions | Built, staged | `src/features/tag-along/lib/tag-along-rules.ts`, `src/components/layout/app-shell.tsx` | Close position, reduce percent, cancel symbol orders, move stop to break-even, enter market. |
+| Magic Trade data subscription planner | Built | `src/features/tag-along/lib/magic-trade-data-engine.ts`, `src/components/layout/app-shell.tsx` | Creates shared price/candle streams for armed rules; unsupported timeframe handling exists. |
+| Magic Trade overlays | Built | `src/features/tag-along/lib/magic-trade-chart-overlays.ts`, `src/features/chart/lib/magic-trade-overlay-primitive.ts` | Armed/near/triggered/executed/failed/skipped overlays on active source chart. |
+| Magic Trade duplicate guard | Built | `src/features/tag-along/lib/magic-trade-live-open-position.ts`, `src/features/tag-along/lib/magic-trade-open-position-execution.ts` | Blocks already-fired/in-flight/conflicting manual execution. |
+| Discipline client risk gate | Built | `src/features/discipline/lib/discipline-risk-gate.ts`, `src/components/layout/app-shell.tsx` | Risk classification and blocks for risk-increasing actions. |
+| Discipline server enforcement | Built | `src/features/discipline/lib/discipline-server-gate.ts`, `src/features/discipline/lib/discipline-server-state.ts`, `src/app/api/execute/route.ts`, `src/app/api/limit-order/route.ts`, `src/app/api/order-zone/route.ts`, `src/app/api/reverse-position/route.ts`, `src/app/api/replace-order/route.ts`, `src/app/api/update-zone-orders/route.ts` | Direct API risk-increasing paths are gated. |
+| Rule states and lock protection | Built | `src/features/discipline/lib/discipline-server-state.ts`, `.portal/discipline-state.json` | Rule state model includes inactive/active/armed/triggered/locked/overridden; weakening rejection exists. |
+| Override Bond simulation | Built, local only | `src/features/discipline/lib/override-bond-ledger.ts`, `src/app/api/discipline/override-bond/route.ts`, `.portal/override-bond-ledger.json`, `docs/launch/v1-known-limitations.md` | Simulated accounting only; no real settlement. |
+| AI Coach deterministic warnings | Built | `src/features/ai-coach/lib/observational-coach.ts`, `src/features/diagnosis/lib/diagnosis-realtime-warnings.ts`, `src/components/layout/app-shell.tsx` | Warnings from discipline, risk gate, override, trade behavior, live position, diagnosis. |
+| AI Coach baseline context | Built | `src/features/baseline-import/*`, `src/features/ai-coach/lib/observational-coach.ts`, `src/components/layout/app-shell.tsx` | Historical import lives in AI Coach context, not native Journal. |
+| Operator Diagnosis | Built | `src/features/diagnosis/lib/operator-diagnosis.ts`, `src/features/diagnosis/lib/discipline-plan-activation.ts`, `src/components/layout/app-shell.tsx` | Deterministic/local, review-first, ignores imported baseline trades. |
+| Journal auto-capture helpers | Built | `src/features/journal/lib/journal-lifecycle.ts`, `src/components/layout/app-shell.tsx` | Open/reduce/close/reverse/order-fill lifecycle helpers exist. |
+| Journal memory events | Built, local | `src/features/journal/lib/journal-memory-events.ts`, `src/features/journal/lib/trade-review.ts`, `src/components/layout/app-shell.tsx` | Event layer exists in browser localStorage, not durable backend. |
+| Journal recap/replay support | Built, local/browser | `src/features/journal/components/trade-recap-replay-viewer.tsx`, `src/features/chart/components/minimal-price-chart.tsx`, `src/types/trade.ts` | Chart snapshot capture/replay frames exist, stored in browser state. |
+| Session Logs | Built, local | `src/components/layout/app-shell.tsx`, `docs/launch/v1-screenshot-checklist.md` | Confirmed events, discipline, Magic, protection history in footer mode. |
+| Footer command deck modes | Built | `src/components/layout/app-shell.tsx`, `docs/brand/PORTAL_BRAND_BIBLE.md` | Trade, Discipline, Journal, AI Coach, Diagnosis, Session Logs, Settings. |
+| Demo reset | Built | `scripts/reset-demo-state.mjs`, `public/portal-demo-reset.html`, `docs/launch/v1-demo-reset.md` | Resets `.portal`, exchange exposure, local/session storage. |
+| Launch docs | Built | `docs/launch/v1-demo-script.md`, `docs/launch/v1-known-limitations.md`, `docs/launch/v1-screenshot-checklist.md` | Demo framing and checklist are explicit. |
+| Automated tests | Built/currently passing | `package.json`, `src/**/*.test.ts` | `npm test` on 2026-05-08: 339 passed, 0 failed. |
+
+## Partially Built
+
+| Feature | What works | What is missing | Evidence files | Risk level |
+| --- | --- | --- | --- | --- |
+| README/docs current-state accuracy | Early scaffold docs exist. Launch docs are current-ish. | README, `mvp_scope.md`, and `architecture_notes.md` still claim AI/discipline/live execution are deferred, which is false today. | `README.md`, `docs/mvp_scope.md`, `docs/architecture_notes.md`, `docs/launch/v1-known-limitations.md` | High |
+| Asset support | Types and chart data support BTC/ETH/SOL. Market execution and Magic Trade open-position prep support BTC/ETH/SOL. | Several mutating API routes still map only BTC: limit orders, order zones, protection. Need route-by-route parity decision. | `src/types/market.ts`, `src/features/tag-along/lib/magic-trade-open-position-execution.ts`, `src/app/api/limit-order/route.ts`, `src/app/api/order-zone/route.ts`, `src/app/api/protection/route.ts` | High |
+| Wallet/connect UX | Account APIs read configured testnet account; UI shows account/margin data. | No production wallet connect flow found. Config depends on env vars and local `.venv-hl` bridge. | `src/app/api/account/route.ts`, `src/lib/hyperliquid/testnet_account.py`, `src/components/layout/app-shell.tsx` | High |
+| Testnet/live mode | Testnet is explicit throughout bridge/API copy. Baseline import can read mainnet/testnet history. | No live-money execution mode; no production settlement. | `docs/launch/v1-known-limitations.md`, `src/lib/hyperliquid/testnet_*.py`, `src/components/layout/app-shell.tsx` | High |
+| TradingView readiness | There is a TradingView iframe component and a custom datafeed module. | Active chart path is `minimal-price-chart`; Advanced Charts library is not integrated. | `src/features/chart/components/tradingview-price-chart.tsx`, `src/features/chart/lib/tradingview/hyperliquid-datafeed.ts`, `docs/launch/v1-known-limitations.md` | Medium |
+| Trendline tools | Types, rendering/editing code paths, triggers around trendline objects exist. | `CUSTOM_TREND_LINE_DRAWING_ENABLED = false`, so user-created trendlines appear disabled/incomplete. | `src/features/chart/components/minimal-price-chart.tsx`, `src/features/chart/types.ts` | Medium |
+| AI Coach | Deterministic warnings/cards, baseline context, dedupe/TTL/dismissal exist. | No external LLM/API integration; not a conversational AI. | `src/features/ai-coach/lib/observational-coach.ts`, `src/features/diagnosis/lib/diagnosis-realtime-warnings.ts`, `docs/launch/v1-known-limitations.md` | Medium |
+| Journal durable memory | Native Journal lifecycle and memory-event layer exist. | Persistence is browser localStorage; no backend/event database/cross-device memory. | `src/features/journal/lib/journal-lifecycle.ts`, `src/features/journal/lib/journal-memory-events.ts`, `src/components/layout/app-shell.tsx`, `docs/launch/v1-known-limitations.md` | High |
+| Session Logs | Local confirmed/action logs exist and feed memory events. | No durable backend log store, no export, no production audit trail. | `src/components/layout/app-shell.tsx`, `src/features/journal/lib/journal-memory-events.ts` | Medium |
+| Override Bond | UI/API/ledger simulation exists. | No real USDC custody, transfer, settlement, or cryptographic token. | `src/app/api/discipline/override-bond/route.ts`, `src/features/discipline/lib/override-bond-ledger.ts`, `docs/launch/v1-known-limitations.md` | High |
+| Brand implementation | Brand docs, tokens, glass-heavy styling exist. | No automated design lint or implementation reference enforcement. Huge inline Tailwind surfaces make consistency hard. | `docs/brand/*`, `src/styles/tokens.css`, `src/app/globals.css`, `src/components/layout/app-shell.tsx` | Medium |
+| Performance hardening | Chart/live state cache, timeout, stale fallback, backoff tests exist. | Mutating Python bridge actions still use per-request process startup and can be slow/testnet-fragile. | `docs/performance_audit.md`, `src/lib/api/bridge-route-timing.ts`, `src/features/live-state/lib/live-state-backoff.ts`, `src/app/api/*/route.ts` | Medium |
+
+## Not Built / Missing
+
+| Feature | Why it matters | Suggested priority | Evidence files or docs mentioning it |
+| --- | --- | --- | --- |
+| Production database | Needed for durable Journal, Session Logs, discipline state, account state, and private beta accounts. | Must finish before private beta | `docs/launch/v1-known-limitations.md`, `src/components/layout/app-shell.tsx`, `.portal/discipline-state.json` |
+| Production wallet connection | Needed before real users can connect their own wallets safely. | Must finish before private beta | `src/app/api/account/route.ts`, `src/lib/hyperliquid/testnet_account.py` |
+| Real Override Bond settlement | Current version is simulated and must not be sold as real USDC. | Can wait until after V1 demo; likely private beta blocker if marketed | `docs/launch/v1-known-limitations.md`, `src/app/api/discipline/override-bond/route.ts` |
+| External LLM/AI integration | Current AI is deterministic warnings and cards, not an AI model. | Can wait until after beta unless AI Coach is positioned as generative | `docs/launch/v1-known-limitations.md`, `src/features/ai-coach/lib/observational-coach.ts` |
+| TradingView Advanced Charts | Needed for deeper chart parity and professional chart expectations. | Should finish before private beta | `docs/launch/v1-known-limitations.md`, `src/features/chart/lib/tradingview/hyperliquid-datafeed.ts` |
+| Full BTC/ETH/SOL mutating parity | Current mixed support can confuse demos and tests. | Must finish before V1 demo if ETH/SOL execution is shown; otherwise explicitly hide/label | `src/app/api/limit-order/route.ts`, `src/app/api/order-zone/route.ts`, `src/app/api/protection/route.ts`, `src/features/tag-along/lib/magic-trade-open-position-execution.ts` |
+| Backend automation engine | Magic Trade runs in browser/client state. | Should finish before private beta for reliability | `src/components/layout/app-shell.tsx`, `src/features/tag-along/lib/tag-along-rules.ts` |
+| Persistent background subscriptions | Needed for rules to fire when tab is closed or browser is unstable. | Should finish before private beta | `src/features/tag-along/lib/magic-trade-data-engine.ts`, `src/components/layout/app-shell.tsx` |
+| Advanced chart drawing layer | Trendline drawing is disabled; Fibonacci/smart objects not present. | Can wait until after beta | `src/features/chart/components/minimal-price-chart.tsx`, `docs/future_feature_backlog.md` |
+| Leaderboard benchmark layer | Explicitly absent. | Future | `docs/launch/v1-known-limitations.md` |
+| Smart Objects | Explicitly absent. | Future | `docs/launch/v1-known-limitations.md` |
+| Social/progression/creator systems | Outside current product scope. | Future | `docs/future_feature_backlog.md`, `docs/mvp_scope.md` |
+
+## Current Architecture Map
+
+| Path | What it does |
+| --- | --- |
+| `src/app` | Next.js App Router pages and API routes. Main UI routes are `/` and `/terminal`; API routes wrap Hyperliquid, discipline, and market data. |
+| `src/components/layout/app-shell.tsx` | Main orchestration surface. Owns most terminal UI state, footer modes, execution handlers, discipline sync, Magic Trade, Journal, AI Coach, Session Logs, and modals. This is the biggest fragility. |
+| `src/features/chart` | Lightweight chart components, primitives, chart snapshot logic, symbol mapping, live-position display/layout tests, TradingView datafeed experiment. |
+| `src/features/execution` | Sizing, limit-order guard, break-even context, reduce-position reconciliation, execution preview component. |
+| `src/features/tag-along` | Magic Trade / Tag-Along rules, sentence builder, data subscriptions, target price resolution, live open-position prep, overlay mapping. |
+| `src/features/discipline` | Risk gate, server-backed discipline state, server gate, blocked time windows, require-protection rule, Override Bond ledger. |
+| `src/features/ai-coach` | Deterministic observational coach cards and real-time warning aggregation. |
+| `src/features/diagnosis` | Operator Diagnosis deterministic helper, realtime diagnosis warnings, review-first Discipline Plan activation. |
+| `src/features/journal` | Journal lifecycle helpers, memory-event layer, insights, trade review, setup preview and replay viewer components. |
+| `src/features/baseline-import` | Hyperliquid historical import, normalization, trade reconstruction, baseline profile, browser storage. |
+| `src/lib/hyperliquid` | Python bridge scripts plus thin TypeScript market-order client. Requires `.venv-hl/bin/python` and Hyperliquid testnet env vars. |
+| `src/lib/api` | Fetch timeout and bridge timing helpers. |
+| `src/lib/markets` | Supported Hyperliquid symbol list. |
+| `src/types` | Shared market/trade/layout types. |
+| `docs/brand` | Brand Bible, prompt pack, visual PDF. Primary product/visual rules. |
+| `docs/launch` | Demo reset, demo script, known limitations, screenshot checklist. |
+| `scripts/reset-demo-state.mjs` | Local/testnet reset automation for clean demos. |
+| `.portal` | Local file-backed Discipline state and Override Bond ledger. |
+| `public/portal-demo-reset.html` | Same-origin browser storage reset page. |
+
+## Current User Flows That Work
+
+- Open `/terminal` and use the chart-first terminal shell.
+- Switch BTC/ETH/SOL chart markets and 1m/5m/15m timeframes.
+- View Hyperliquid testnet chart candles, live price updates, market metadata, account/margin context, order book, and recent trades when bridge/network are healthy.
+- Create chart levels, zones, no-trade zones, and chart trade plans with entry/SL/TP.
+- Open market orders on Hyperliquid testnet through `/api/execute` with discipline gating and sizing limits.
+- Place BTC limit orders and BTC order-zone ladders.
+- Attach/update BTC SL/TP protection and move stop to break-even.
+- Close a position, reduce a position, reverse a position, cancel orders, cancel all, and close all through testnet bridge routes.
+- Build, arm, and evaluate Magic Trade rules for touch/cross/candle-close conditions.
+- Run Magic Trade risk-reducing live actions and Magic Trade open-position prep for BTC/ETH/SOL.
+- See Magic Trade overlays on the source chart and execution records in local state.
+- Enable/use Discipline rules including cooldown, max trades, min R:R, no-trade zones, blocked time windows, require protection, and market-entry confirmation.
+- Block direct API execution routes server-side when risk-increasing actions violate active discipline rules.
+- Use simulated Override Bond to override locked rules and write the local ledger.
+- View deterministic AI Coach warnings/cards and dismiss TTL-based warnings.
+- Import historical Hyperliquid baseline context for AI Coach while keeping native Journal separate.
+- Auto-capture native Journal entries for opened/reduced/closed/reversed/order-filled flows where app-shell handlers have the necessary payloads.
+- Review Journal recap, trade memory, plan followed/broken/unclear, setup tags, and replay frames where snapshots exist.
+- View Session Logs for confirmed actions, discipline, protection, Magic, and system events.
+- Run demo reset with `npm run demo:reset -- --base-url http://localhost:3002 --strict-exchange`.
+- Clear browser demo state via `http://localhost:3002/portal-demo-reset.html`.
+
+## Current User Flows That Do Not Fully Work
+
+- Production/live-money trading is not enabled; V1 is testnet only.
+- Wallet connection is not a user-facing production wallet flow; it depends on configured testnet env vars and local Python bridge.
+- ETH/SOL support is inconsistent across execution surfaces. Chart and some Magic Trade open-position paths support ETH/SOL, but limit/order-zone/protection routes validate BTC only.
+- TradingView Advanced Charts are not active; current chart is the custom Lightweight Charts V1 implementation.
+- Trendline drawing appears intentionally disabled by `CUSTOM_TREND_LINE_DRAWING_ENABLED = false`.
+- Magic Trade is browser/client-state driven; it is not a durable backend automation service.
+- Journal/Session Logs/memory events are not durable beyond browser localStorage.
+- Override Bond is simulated; no real funds move.
+- AI Coach does not call an LLM or external AI API.
+- Launch readiness depends on local `.venv-hl` bridge, env vars, Hyperliquid testnet health, and same-origin browser storage reset.
+
+## Test / Validation Inventory
+
+| Item | Command / path | What it validates | Current status |
+| --- | --- | --- | --- |
+| Full unit/integration test suite | `npm test` | Chart cache/fallback, execution payloads, AI warnings, baseline import, chart helpers, diagnosis, discipline gates/server enforcement, Journal lifecycle/memory, Magic Trade, bridge timing, fetch timeout, market-order client. | PASS on 2026-05-08: 339 passed, 0 failed. |
+| Build | `npm run build` | Next production build/type integration. | Not run in this audit. |
+| Dev server | `npm run dev` | Local Next dev server. | Not started in this audit. |
+| Demo reset | `npm run demo:reset -- --base-url http://localhost:3002 --strict-exchange` | File-backed discipline reset, Override Bond ledger clear, exchange cleanup/verification. | Script exists; not run in this audit. |
+| Local-only reset | `npm run demo:reset -- --local-only` | File-backed state reset without server/exchange. | Script exists; not run in this audit. |
+| Browser storage reset | `http://localhost:3002/portal-demo-reset.html` | Clears Portal localStorage/sessionStorage and redirects to `/terminal`. | Page exists; not opened in this audit. |
+| Launch demo checklist | `docs/launch/v1-screenshot-checklist.md` | Manual screenshot pass across Trade, Magic, Discipline, Override Bond, AI Coach, Journal, Diagnosis, Logs. | Checklist exists. |
+| Performance audit evidence | `docs/performance_audit.md` | Prior chart/live-state performance verification, route timing evidence. | Historical doc from 2026-05-03. |
+
+Exact current test command result:
+
+```bash
+npm test
+# tests 339
+# pass 339
+# fail 0
+# skipped 0
+```
+
+## Known Risks / Fragile Areas
+
+- `src/components/layout/app-shell.tsx` is doing too much. It is the UI shell, state store, execution controller, discipline sync layer, Magic Trade engine host, Journal writer, Session Log writer, AI Coach surface, and modal manager. This is the largest technical risk.
+- Docs are split between stale early MVP docs and current launch docs. A new developer reading only README/MVP would misunderstand the project.
+- Execution asset support is inconsistent. BTC/ETH/SOL are first-class types and chart symbols, but several mutating routes still use BTC-only symbol maps.
+- The Python bridge is local-runtime sensitive. `.venv-hl/bin/python`, `HYPERLIQUID_TESTNET_SECRET_KEY`, and sometimes `HYPERLIQUID_TESTNET_ACCOUNT_ADDRESS` are required. The app returns explicit runtime/env errors, but demo reliability depends on setup.
+- Hyperliquid testnet/network instability is already documented. Read routes have timeouts/backoff; mutating routes still rely on bridge process/network health.
+- No production persistence. `.portal` and localStorage are acceptable for local V1 demos but not beta-grade account/user data.
+- AI copy/product positioning must remain careful. The code is deterministic/local; claiming external AI or model reasoning would be overclaiming.
+- Override Bond copy must stay explicit: simulation only, no real USDC settlement.
+- Brand docs are not programmatically enforced. The implementation has many inline Tailwind classes and custom CSS; visual drift is likely without disciplined review.
+- Browser-based Magic Trade automation may miss events if the tab is closed, suspended, or disconnected.
+- Test coverage is strong for helpers and server gates, but there is no current end-to-end browser smoke result in this audit.
+
+## Recommended Next 10 Tasks
+
+1. Update `README.md`, `docs/mvp_scope.md`, and `docs/architecture_notes.md` so they match the real current V1 instead of the old scaffold.
+2. Decide and enforce the V1 asset contract: either BTC-only execution demo or full BTC/ETH/SOL parity across market, limit, protection, order-zone, close/reduce/reverse/cancel flows.
+3. Run a clean browser/dev-server smoke on `http://localhost:3002/terminal`: console errors, chart load, footer modes, trade controls hidden in non-trade modes, reset page.
+4. Add a concise `docs/audits/current-execution-matrix.md` or update launch docs with exact route-by-route BTC/ETH/SOL support.
+5. Split high-risk logic out of `app-shell.tsx` into narrow modules: Session Log service, Journal capture adapter, Magic Trade runtime hook, Discipline UI adapter.
+6. Add an E2E smoke test or script for the clean demo loop: reset -> `/terminal` -> chart ready -> footer modes -> no console errors.
+7. Harden mutating bridge timing/error telemetry like the read-only account/live/pending routes.
+8. Keep Magic Trade V1 browser-run, but document that it requires the terminal tab open; then plan backend runtime for private beta.
+9. Add production-persistence design spec for Journal, Session Logs, Discipline state, Magic rules, and baseline imports.
+10. Create a brand implementation checklist tied to specific components so future UI passes preserve chart dominance, footer ownership, and earned glow.
+
+## Roadmap Extraction
+
+### Must Finish Before V1 Demo
+
+- Fix or clearly document stale README/MVP architecture docs.
+- Confirm the exact local URL and run a fresh `/terminal` browser smoke.
+- Decide whether demo uses BTC only or explicitly includes ETH/SOL; avoid mixed claims.
+- Run demo reset and prove `.portal`, browser storage, live positions, and pending orders are clean.
+- Verify non-trade footer modes hide trade controls.
+- Keep Override Bond and AI Coach copy honest: simulated/local/deterministic.
+
+### Should Finish Before Private Beta
+
+- Durable backend persistence for Journal, Session Logs, Magic rules, Discipline state, and baseline sources.
+- Production wallet/connect model.
+- Backend automation/runtime for Magic Trade.
+- Full route-level execution parity for supported assets, or deliberate product-level limitation.
+- TradingView Advanced Charts or a clear professional-charting roadmap.
+- Better bridge/runtime resilience and observability for mutating actions.
+
+### Can Wait Until After Beta
+
+- Real Override Bond settlement.
+- External LLM-powered coaching.
+- Expanded chart drawing tools beyond V1.
+- Advanced analytics and deeper behavioral scoring.
+- Export/reporting flows for Journal/Session Logs.
+
+### Future / Advanced Features
+
+- Smart Objects.
+- Hyperliquid leaderboard benchmark layer.
+- Multi-exchange support.
+- Indicator-based triggers.
+- Time-based entries/exits beyond current narrow rule set.
+- Fibonacci/draw-to-trade advanced logic.
+- Progression, social, creator marketplace, community chart skills.

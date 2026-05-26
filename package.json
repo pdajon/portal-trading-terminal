@@ -1,0 +1,48 @@
+{
+  "name": "portal",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "predev": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" node scripts/ensure-local-dev-runtime.mjs",
+    "dev": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" next dev",
+    "local:repair": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" node scripts/ensure-local-dev-runtime.mjs",
+    "build": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" next build",
+    "start": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" next start",
+    "test": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" node scripts/run-src-tests.mjs",
+    "audit:insight-baseline": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" tsx scripts/write-insight-baseline-audit.ts",
+    "audit:hyperliquid-pnl-reconciliation": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" tsx scripts/write-hyperliquid-pnl-reconciliation-audit.ts",
+    "audit:manual-history-import": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" tsx scripts/write-manual-history-import-audit.ts",
+    "audit:session-intelligence": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" tsx scripts/write-session-intelligence-audit.ts",
+    "audit:trade-reconstruction": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" tsx scripts/write-trade-reconstruction-audit.ts",
+    "demo:reset": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" node scripts/reset-demo-state.mjs",
+    "backup": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" node scripts/backup-portal.mjs",
+    "backup:restore": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" node scripts/restore-portal-backup.mjs",
+    "backup:schedule": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" node scripts/install-portal-backup-schedule.mjs",
+    "remotion:studio": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" remotion studio video/remotion/index.ts",
+    "remotion:render": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" remotion render video/remotion/index.ts MagicTradeExplainer out/magic-trade-explainer.mp4",
+    "remotion:render:webm": "PATH=\"/opt/homebrew/opt/node@22/bin:$PATH\" remotion render video/remotion/index.ts MagicTradeExplainer out/magic-trade-explainer.webm --codec=vp8"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "lightweight-charts": "^5.2.0",
+    "next": "15.5.15",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "tailwind-merge": "^3.3.0"
+  },
+  "devDependencies": {
+    "@remotion/cli": "^4.0.454",
+    "@types/node": "^22.14.1",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "remotion": "^4.0.454",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.21.0",
+    "typescript": "^5.8.3"
+  }
+}

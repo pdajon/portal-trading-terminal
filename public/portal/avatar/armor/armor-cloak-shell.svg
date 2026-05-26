@@ -1,0 +1,17 @@
+<svg width="512" height="512" viewBox="62 108 388 370" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cloak Shell armor layer">
+  <defs>
+    <linearGradient id="armorCloakObsidian" x1="142" x2="370" y1="274" y2="431" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#101827" stop-opacity="0.18"/>
+      <stop offset="0.42" stop-color="#05070D" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#111827" stop-opacity="0.24"/>
+    </linearGradient>
+    <linearGradient id="armorCloakEdge" x1="151" x2="361" y1="305" y2="424" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CF6" stop-opacity="0.36"/>
+      <stop offset="0.48" stop-color="#67E8F9" stop-opacity="0.58"/>
+      <stop offset="1" stop-color="#2563EB" stop-opacity="0.26"/>
+    </linearGradient>
+  </defs>
+  <path d="M142 274C127 311 131 366 165 414C190 449 224 457 256 431C288 457 322 449 347 414C381 366 385 311 370 274C350 337 310 383 256 387C202 383 162 337 142 274Z" fill="url(#armorCloakObsidian)" opacity="0.64"/>
+  <path d="M151 305C174 362 211 396 256 400C301 396 338 362 361 305" stroke="url(#armorCloakEdge)" stroke-linecap="round" stroke-width="1.9" opacity="0.48"/>
+  <path d="M214 424C232 432 244 434 256 421C268 434 280 432 298 424" stroke="#8B5CF6" stroke-linecap="round" stroke-opacity="0.3" stroke-width="1.4"/>
+</svg>

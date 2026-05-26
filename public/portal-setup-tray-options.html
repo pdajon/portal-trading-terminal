@@ -1,0 +1,709 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portal Setup Tray Directions</title>
+    <style>
+      :root {
+        --void: #05060a;
+        --deep: #090b14;
+        --panel: #0d101b;
+        --cyan: #33f5ff;
+        --blue: #3b82f6;
+        --violet: #8b5cf6;
+        --pink: #ff3d8a;
+        --amber: #f59e0b;
+        --radius: 7px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 50% -10%, rgba(51, 245, 255, 0.14), transparent 28rem),
+          radial-gradient(circle at 78% 0%, rgba(139, 92, 246, 0.14), transparent 30rem),
+          radial-gradient(circle at 8% 24%, rgba(255, 61, 138, 0.06), transparent 24rem),
+          linear-gradient(180deg, #05060a 0%, #070a12 48%, #04050a 100%);
+        color: rgba(255, 255, 255, 0.9);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      .page {
+        max-width: 1580px;
+        margin: 0 auto;
+        padding: 28px 28px 40px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 22px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .mark {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid rgba(207, 250, 254, 0.78);
+        background:
+          radial-gradient(circle at 50% 50%, transparent 34%, rgba(51, 245, 255, 0.16) 35%, transparent 62%),
+          linear-gradient(140deg, rgba(51, 245, 255, 0.24), rgba(139, 92, 246, 0.18));
+        box-shadow: 0 0 18px rgba(51, 245, 255, 0.18);
+      }
+
+      .eyebrow {
+        margin: 0 0 6px;
+        color: rgba(207, 250, 254, 0.68);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 28px;
+        line-height: 1.1;
+        letter-spacing: 0;
+      }
+
+      .note {
+        max-width: 560px;
+        margin: 0;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .context {
+        display: grid;
+        grid-template-columns: 1fr 1.6fr 1.2fr;
+        gap: 10px;
+        overflow: hidden;
+        min-height: 116px;
+        margin-bottom: 18px;
+        border: 1px solid rgba(165, 243, 252, 0.08);
+        border-radius: var(--radius);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.014)),
+          rgba(6, 10, 18, 0.84);
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.06),
+          0 22px 70px rgba(0, 0, 0, 0.42);
+        clip-path: inset(0 round var(--radius));
+      }
+
+      .avatar {
+        position: relative;
+        display: grid;
+        place-items: center;
+        min-height: 116px;
+        border-right: 1px solid rgba(255, 255, 255, 0.055);
+        background:
+          radial-gradient(circle at 44% 72%, rgba(51, 245, 255, 0.13), transparent 38%),
+          radial-gradient(circle at 55% 32%, rgba(139, 92, 246, 0.14), transparent 32%),
+          linear-gradient(140deg, rgba(8, 18, 31, 0.58), rgba(3, 6, 13, 0.86));
+      }
+
+      .orb {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        border: 1px solid rgba(103, 232, 249, 0.36);
+        background:
+          radial-gradient(circle at 38% 38%, rgba(255, 255, 255, 0.2), transparent 7%),
+          radial-gradient(circle at 63% 42%, rgba(51, 245, 255, 0.44), transparent 7%),
+          radial-gradient(circle at 50% 50%, #05060a 42%, rgba(9, 18, 34, 0.92) 43%, #111827 68%, rgba(139, 92, 246, 0.28));
+        box-shadow:
+          0 0 0 1px rgba(139, 92, 246, 0.2),
+          0 0 34px rgba(51, 245, 255, 0.15);
+      }
+
+      .mini-chart {
+        padding: 18px;
+        border-right: 1px solid rgba(255, 255, 255, 0.055);
+        background:
+          linear-gradient(90deg, rgba(51, 245, 255, 0.035) 1px, transparent 1px),
+          linear-gradient(180deg, rgba(51, 245, 255, 0.03) 1px, transparent 1px);
+        background-size: 46px 36px;
+      }
+
+      .chart-line {
+        height: 76px;
+        border-radius: var(--radius);
+        background:
+          linear-gradient(155deg, transparent 0 18%, rgba(34, 197, 94, 0.45) 18% 19%, transparent 20% 36%, rgba(239, 68, 68, 0.42) 37% 38%, transparent 39% 55%, rgba(51, 245, 255, 0.5) 56% 57%, transparent 58%),
+          rgba(255, 255, 255, 0.012);
+        border: 1px solid rgba(255, 255, 255, 0.045);
+      }
+
+      .execution {
+        padding: 18px;
+      }
+
+      .execution-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .metric {
+        min-height: 35px;
+        border-left: 1px solid rgba(139, 92, 246, 0.22);
+        padding-left: 12px;
+      }
+
+      .metric span {
+        display: block;
+        margin-bottom: 5px;
+        color: rgba(255, 255, 255, 0.32);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .metric strong {
+        font-size: 14px;
+      }
+
+      .directions {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .direction {
+        position: relative;
+        overflow: hidden;
+        min-height: 604px;
+        border: 1px solid rgba(165, 243, 252, 0.105);
+        border-radius: var(--radius);
+        background:
+          radial-gradient(circle at 16% 0%, rgba(51, 245, 255, 0.08), transparent 24rem),
+          radial-gradient(circle at 84% 4%, rgba(139, 92, 246, 0.1), transparent 22rem),
+          linear-gradient(180deg, rgba(13, 16, 27, 0.92), rgba(5, 7, 12, 0.96));
+        box-shadow:
+          0 24px 72px rgba(0, 0, 0, 0.36),
+          inset 0 1px 0 rgba(255, 255, 255, 0.075);
+        clip-path: inset(0 round var(--radius));
+      }
+
+      .direction::before {
+        position: absolute;
+        inset: 0 18px auto;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(51, 245, 255, 0.5), transparent);
+        content: "";
+      }
+
+      .direction-inner {
+        position: relative;
+        display: flex;
+        min-height: 604px;
+        flex-direction: column;
+        padding: 18px;
+      }
+
+      .direction-head {
+        min-height: 112px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+        padding-bottom: 16px;
+      }
+
+      .option-label {
+        color: rgba(51, 245, 255, 0.72);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        margin: 9px 0 8px;
+        color: rgba(255, 255, 255, 0.94);
+        font-size: 20px;
+        line-height: 1.15;
+        letter-spacing: 0;
+      }
+
+      .direction p {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.48);
+        font-size: 12px;
+        line-height: 1.55;
+      }
+
+      .mock-tray {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        margin-top: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.065);
+        border-radius: var(--radius);
+        background:
+          radial-gradient(circle at 22% 0%, rgba(139, 92, 246, 0.08), transparent 18rem),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.012));
+        clip-path: inset(0 round var(--radius));
+      }
+
+      .tray-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 16px 16px 14px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+      }
+
+      .tray-kicker {
+        margin-bottom: 8px;
+        color: rgba(196, 181, 253, 0.68);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
+      .tray-title {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 17px;
+        font-weight: 760;
+        line-height: 1.15;
+      }
+
+      .tray-copy {
+        margin-top: 8px;
+        max-width: 26rem;
+        color: rgba(255, 255, 255, 0.44);
+        font-size: 11px;
+        line-height: 1.45;
+      }
+
+      .status-line {
+        padding-top: 3px;
+        color: rgba(103, 232, 249, 0.62);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-align: right;
+        text-transform: uppercase;
+      }
+
+      .tray-body {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 10px;
+        padding: 14px 16px;
+      }
+
+      .row-choice {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 12px;
+        min-height: 45px;
+        border: 1px solid rgba(255, 255, 255, 0.055);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.022);
+        padding: 9px 11px;
+        color: rgba(255, 255, 255, 0.72);
+      }
+
+      .row-choice.selected {
+        border-color: rgba(51, 245, 255, 0.28);
+        background:
+          linear-gradient(90deg, rgba(51, 245, 255, 0.08), rgba(139, 92, 246, 0.045)),
+          rgba(255, 255, 255, 0.026);
+        box-shadow:
+          0 0 18px rgba(51, 245, 255, 0.08),
+          inset 0 1px 0 rgba(255, 255, 255, 0.07);
+      }
+
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: rgba(139, 92, 246, 0.48);
+      }
+
+      .selected .dot {
+        background: var(--cyan);
+        box-shadow: 0 0 11px rgba(51, 245, 255, 0.75);
+      }
+
+      .choice-main strong {
+        display: block;
+        margin-bottom: 3px;
+        color: rgba(255, 255, 255, 0.88);
+        font-size: 12px;
+      }
+
+      .choice-main span {
+        color: rgba(255, 255, 255, 0.38);
+        font-size: 10px;
+      }
+
+      .mono {
+        color: rgba(207, 250, 254, 0.42);
+        font-family: "SFMono-Regular", Consolas, monospace;
+        font-size: 10px;
+      }
+
+      .tray-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: auto;
+        border-top: 1px solid rgba(255, 255, 255, 0.055);
+        padding: 14px 16px 16px;
+      }
+
+      .ghost {
+        border: 0;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.38);
+        cursor: default;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .primary {
+        min-height: 34px;
+        border: 1px solid rgba(51, 245, 255, 0.2);
+        border-radius: var(--radius);
+        background: linear-gradient(180deg, rgba(51, 245, 255, 0.16), rgba(59, 130, 246, 0.12));
+        color: rgba(236, 254, 255, 0.92);
+        padding: 0 14px;
+        box-shadow:
+          0 0 18px rgba(51, 245, 255, 0.08),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        cursor: default;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .suggested-strip {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .signal-card {
+        min-height: 78px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: var(--radius);
+        background:
+          radial-gradient(circle at 85% 0%, rgba(51, 245, 255, 0.1), transparent 70%),
+          rgba(255, 255, 255, 0.024);
+        padding: 11px;
+      }
+
+      .signal-card.active {
+        border-color: rgba(139, 92, 246, 0.34);
+        background:
+          radial-gradient(circle at 90% 0%, rgba(139, 92, 246, 0.22), transparent 72%),
+          rgba(139, 92, 246, 0.05);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .signal-card span {
+        display: block;
+        color: rgba(255, 255, 255, 0.34);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .signal-card strong {
+        display: block;
+        margin-top: 10px;
+        font-size: 13px;
+      }
+
+      .mini-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .mini-tag {
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: var(--radius);
+        background: rgba(255, 255, 255, 0.022);
+        color: rgba(255, 255, 255, 0.58);
+        padding: 8px 10px;
+        font-size: 11px;
+        font-weight: 760;
+      }
+
+      .command {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid rgba(51, 245, 255, 0.2);
+        border-radius: var(--radius);
+        background:
+          radial-gradient(circle at 100% 0%, rgba(51, 245, 255, 0.12), transparent 60%),
+          rgba(0, 0, 0, 0.24);
+        padding: 8px;
+        box-shadow:
+          0 0 22px rgba(51, 245, 255, 0.08),
+          inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      }
+
+      .command input {
+        width: 100%;
+        border: 0;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.88);
+        outline: 0;
+        padding: 8px 6px;
+      }
+
+      .command input::placeholder {
+        color: rgba(255, 255, 255, 0.36);
+      }
+
+      .command button {
+        width: 34px;
+        height: 34px;
+        border: 1px solid rgba(139, 92, 246, 0.28);
+        border-radius: var(--radius);
+        background: rgba(139, 92, 246, 0.12);
+        color: rgba(237, 233, 254, 0.92);
+      }
+
+      .palette-results {
+        display: grid;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .palette-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid transparent;
+        border-radius: var(--radius);
+        padding: 10px 11px;
+        color: rgba(255, 255, 255, 0.62);
+      }
+
+      .palette-row.hot {
+        border-color: rgba(51, 245, 255, 0.18);
+        background: rgba(51, 245, 255, 0.045);
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .verdict {
+        margin-top: 12px;
+        border-left: 1px solid rgba(245, 158, 11, 0.46);
+        padding-left: 12px;
+        color: rgba(255, 255, 255, 0.52);
+        font-size: 11px;
+        line-height: 1.55;
+      }
+
+      @media (max-width: 1180px) {
+        .directions,
+        .context {
+          grid-template-columns: 1fr;
+        }
+
+        .avatar,
+        .mini-chart {
+          border-right: 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar">
+        <div class="brand">
+          <div class="mark" aria-hidden="true"></div>
+          <div>
+            <p class="eyebrow">Portal visual options</p>
+            <h1>Setup tray direction board</h1>
+          </div>
+        </div>
+        <p class="note">
+          These are visual directions only. They keep the command-deck footprint,
+          the 7px rectangular radius, dark glass, quiet hierarchy, and earned
+          cyan/violet glow.
+        </p>
+      </header>
+
+      <section class="context" aria-label="Portal terminal context">
+        <div class="avatar">
+          <div class="orb" aria-hidden="true"></div>
+        </div>
+        <div class="mini-chart">
+          <p class="eyebrow">Chart stays sacred</p>
+          <div class="chart-line" aria-hidden="true"></div>
+        </div>
+        <div class="execution">
+          <div class="execution-grid">
+            <div class="metric"><span>Available</span><strong>0 USDC</strong></div>
+            <div class="metric"><span>Position</span><strong>0.00000 BTC</strong></div>
+            <div class="metric"><span>Mode</span><strong>Journal capture</strong></div>
+            <div class="metric"><span>State</span><strong>Optional thesis</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="directions" aria-label="Setup tray options">
+        <article class="direction">
+          <div class="direction-inner">
+            <div class="direction-head">
+              <div class="option-label">Option A</div>
+              <h2>Thesis Stack</h2>
+              <p>Most operator-grade. Replaces big tile buttons with compact rows that show hierarchy, state, and optional signal metadata.</p>
+            </div>
+            <div class="mock-tray">
+              <div class="tray-head">
+                <div>
+                  <div class="tray-kicker">Trade Thesis</div>
+                  <div class="tray-title">Tag the setup behind this trade</div>
+                  <div class="tray-copy">Optional journal context. Helps Portal compare outcomes without turning the footer into a form.</div>
+                </div>
+                <div class="status-line">Recommended</div>
+              </div>
+              <div class="tray-body">
+                <div class="row-choice selected">
+                  <span class="dot"></span>
+                  <div class="choice-main"><strong>Liquidity Sweep</strong><span>Stop run into reversal area</span></div>
+                  <span class="mono">92%</span>
+                </div>
+                <div class="row-choice">
+                  <span class="dot"></span>
+                  <div class="choice-main"><strong>Trend Break</strong><span>Structure shift with momentum</span></div>
+                  <span class="mono">FAST</span>
+                </div>
+                <div class="row-choice">
+                  <span class="dot"></span>
+                  <div class="choice-main"><strong>Retest</strong><span>Confirm level acceptance first</span></div>
+                  <span class="mono">CALM</span>
+                </div>
+                <div class="row-choice">
+                  <span class="dot"></span>
+                  <div class="choice-main"><strong>Support Bounce</strong><span>Reaction trade at known level</span></div>
+                  <span class="mono">ZONE</span>
+                </div>
+              </div>
+              <div class="tray-actions">
+                <button class="ghost">Skip</button>
+                <button class="primary">Save thesis</button>
+              </div>
+            </div>
+            <div class="verdict">Best if you want pro, calm, and native. This is my recommendation.</div>
+          </div>
+        </article>
+
+        <article class="direction">
+          <div class="direction-inner">
+            <div class="direction-head">
+              <div class="option-label">Option B</div>
+              <h2>Suggested First</h2>
+              <p>Feels smarter. A small suggested band appears first, then the rest become quiet secondary tags instead of equal heavy boxes.</p>
+            </div>
+            <div class="mock-tray">
+              <div class="tray-head">
+                <div>
+                  <div class="tray-kicker">Trade Thesis</div>
+                  <div class="tray-title">What was the actual idea?</div>
+                  <div class="tray-copy">Portal can suggest the likely setup, but the trader confirms the thesis.</div>
+                </div>
+                <div class="status-line">3 signals</div>
+              </div>
+              <div class="tray-body">
+                <div class="suggested-strip">
+                  <div class="signal-card active"><span>Suggested</span><strong>Liquidity Sweep</strong></div>
+                  <div class="signal-card"><span>Possible</span><strong>Retest</strong></div>
+                  <div class="signal-card"><span>Possible</span><strong>Reversal</strong></div>
+                  <div class="signal-card"><span>Manual</span><strong>News/Event</strong></div>
+                </div>
+                <div class="mini-tags">
+                  <span class="mini-tag">Trend Break</span>
+                  <span class="mini-tag">Range Break</span>
+                  <span class="mini-tag">Breakout</span>
+                  <span class="mini-tag">Continuation</span>
+                  <span class="mini-tag">More setups</span>
+                </div>
+              </div>
+              <div class="tray-actions">
+                <button class="ghost">Not now</button>
+                <button class="primary">Confirm selected</button>
+              </div>
+            </div>
+            <div class="verdict">Best if Portal should feel more intelligent without overclaiming.</div>
+          </div>
+        </article>
+
+        <article class="direction">
+          <div class="direction-inner">
+            <div class="direction-head">
+              <div class="option-label">Option C</div>
+              <h2>Command Palette</h2>
+              <p>Fastest and cleanest. One command-style input with ranked suggestions below. Slightly more of a UX change.</p>
+            </div>
+            <div class="mock-tray">
+              <div class="tray-head">
+                <div>
+                  <div class="tray-kicker">Trade Thesis</div>
+                  <div class="tray-title">Tag this trade</div>
+                  <div class="tray-copy">Type or pick a setup. The surface stays compact and gets out of the way fast.</div>
+                </div>
+                <div class="status-line">Optional</div>
+              </div>
+              <div class="tray-body">
+                <div class="command">
+                  <input value="" placeholder="Search or create thesis..." aria-label="Search or create thesis" />
+                  <button>+</button>
+                </div>
+                <div class="palette-results">
+                  <div class="palette-row hot"><strong>Liquidity Sweep</strong><span class="mono">Select</span></div>
+                  <div class="palette-row"><strong>Trend Break</strong><span class="mono">2</span></div>
+                  <div class="palette-row"><strong>Support Bounce</strong><span class="mono">3</span></div>
+                  <div class="palette-row"><strong>Create custom tag</strong><span class="mono">+</span></div>
+                </div>
+              </div>
+              <div class="tray-actions">
+                <button class="ghost">Skip tag</button>
+                <button class="primary">Capture</button>
+              </div>
+            </div>
+            <div class="verdict">Best if you want the cleanest future state and less visible UI.</div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,117 @@
+<svg width="512" height="512" viewBox="62 108 388 370" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Portal Being placeholder">
+  <style>
+    .portal-being-eye,
+    .portal-being-eye-highlight {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: portalBeingEyeBlink 7.2s ease-in-out infinite;
+    }
+
+    .portal-being-eye-highlight {
+      animation-name: portalBeingEyeHighlightBlink;
+    }
+
+    @keyframes portalBeingEyeBlink {
+      0%,
+      84%,
+      89%,
+      100% {
+        transform: scaleY(1);
+      }
+
+      86.4%,
+      87.2% {
+        transform: scaleY(0.08);
+      }
+    }
+
+    @keyframes portalBeingEyeHighlightBlink {
+      0%,
+      84%,
+      89%,
+      100% {
+        opacity: 0.44;
+        transform: scaleY(1);
+      }
+
+      86.4%,
+      87.2% {
+        opacity: 0.12;
+        transform: scaleY(0.08);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .portal-being-eye,
+      .portal-being-eye-highlight {
+        animation: none;
+      }
+    }
+  </style>
+  <defs>
+    <radialGradient id="bodyFill" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(222 202) rotate(67) scale(316 267)">
+      <stop stop-color="#243C6B" stop-opacity="0.95"/>
+      <stop offset="0.36" stop-color="#121936" stop-opacity="0.98"/>
+      <stop offset="0.7" stop-color="#080B19"/>
+      <stop offset="1" stop-color="#04050B"/>
+    </radialGradient>
+    <radialGradient id="facePlate" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(256 244) rotate(90) scale(86 142)">
+      <stop stop-color="#080B11"/>
+      <stop offset="0.62" stop-color="#02040A"/>
+      <stop offset="1" stop-color="#000106"/>
+    </radialGradient>
+    <linearGradient id="rimStroke" x1="103" y1="148" x2="407" y2="436" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CF6" stop-opacity="0.82"/>
+      <stop offset="0.48" stop-color="#67E8F9" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#2563EB" stop-opacity="0.36"/>
+    </linearGradient>
+    <linearGradient id="eyeFill" x1="211" y1="228" x2="305" y2="309" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#CFFAFE"/>
+      <stop offset="0.42" stop-color="#67E8F9"/>
+      <stop offset="1" stop-color="#22D3EE"/>
+    </linearGradient>
+    <linearGradient id="sideFill" x1="101" y1="235" x2="411" y2="337" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3B1B83"/>
+      <stop offset="0.5" stop-color="#0B1532"/>
+      <stop offset="1" stop-color="#0E7490"/>
+    </linearGradient>
+    <radialGradient id="lowerNubFill" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(256 416) rotate(90) scale(74 122)">
+      <stop stop-color="#17264D"/>
+      <stop offset="0.48" stop-color="#0B1128"/>
+      <stop offset="1" stop-color="#04050B"/>
+    </radialGradient>
+    <filter id="softAura" x="54" y="72" width="404" height="392" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+    <filter id="eyeAura" x="180" y="204" width="154" height="94" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+  </defs>
+
+  <rect width="512" height="640" fill="transparent"/>
+  <path d="M148 255C126 237 91 250 82 287C73 324 96 358 131 357C152 356 168 341 175 316L148 255Z" fill="url(#sideFill)" opacity="0.6" filter="url(#softAura)"/>
+  <path d="M364 255C386 237 421 250 430 287C439 324 416 358 381 357C360 356 344 341 337 316L364 255Z" fill="url(#sideFill)" opacity="0.6" filter="url(#softAura)"/>
+  <path d="M148 255C126 237 91 250 82 287C73 324 96 358 131 357C152 356 168 341 175 316" fill="url(#sideFill)" stroke="url(#rimStroke)" stroke-width="1.65" stroke-opacity="0.5"/>
+  <path d="M364 255C386 237 421 250 430 287C439 324 416 358 381 357C360 356 344 341 337 316" fill="url(#sideFill)" stroke="url(#rimStroke)" stroke-width="1.65" stroke-opacity="0.5"/>
+  <path d="M183 387C164 403 166 439 191 454C219 471 253 450 254 414C255 393 239 379 216 378C201 378 190 381 183 387Z" fill="url(#lowerNubFill)" stroke="url(#rimStroke)" stroke-width="1.7" stroke-opacity="0.52"/>
+  <path d="M329 387C348 403 346 439 321 454C293 471 259 450 258 414C257 393 273 379 296 378C311 378 322 381 329 387Z" fill="url(#lowerNubFill)" stroke="url(#rimStroke)" stroke-width="1.7" stroke-opacity="0.52"/>
+
+  <path d="M256 126C346 126 400 185 406 276C412 367 352 432 256 432C160 432 100 367 106 276C112 185 166 126 256 126Z" fill="url(#bodyFill)" filter="url(#softAura)" opacity="0.62"/>
+  <path d="M256 130C341 130 395 187 400 276C405 363 348 424 256 424C164 424 107 363 112 276C117 187 171 130 256 130Z" fill="url(#bodyFill)" stroke="url(#rimStroke)" stroke-width="2.4"/>
+  <path d="M126 292C130 215 178 161 256 161C334 161 382 215 386 292" stroke="#C4B5FD" stroke-opacity="0.16" stroke-width="2"/>
+  <path d="M150 372C181 403 216 416 256 416C296 416 331 403 362 372" stroke="#67E8F9" stroke-opacity="0.17" stroke-width="2"/>
+  <path d="M256 132C305 135 347 168 373 218" stroke="#67E8F9" stroke-opacity="0.22" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M133 320C146 381 191 421 256 424" stroke="#8B5CF6" stroke-opacity="0.18" stroke-width="2.6" stroke-linecap="round"/>
+
+  <path d="M163 225C181 187 219 171 256 171C293 171 331 187 349 225C363 256 351 296 319 318C288 339 224 339 193 318C161 296 149 256 163 225Z" fill="url(#facePlate)" stroke="#1E293B" stroke-width="2.3"/>
+  <path d="M166 225C184 191 221 179 256 179C291 179 328 191 346 225" stroke="#67E8F9" stroke-opacity="0.15" stroke-width="2" stroke-linecap="round"/>
+  <path d="M188 306C213 321 232 327 256 327C280 327 299 321 324 306" stroke="#8B5CF6" stroke-opacity="0.18" stroke-width="2" stroke-linecap="round"/>
+
+  <rect class="portal-being-eye" x="204" y="232" width="22" height="55" rx="11" fill="url(#eyeFill)" filter="url(#eyeAura)"/>
+  <rect class="portal-being-eye" x="286" y="232" width="22" height="55" rx="11" fill="url(#eyeFill)" filter="url(#eyeAura)"/>
+  <rect class="portal-being-eye-highlight" x="209" y="238" width="12" height="43" rx="6" fill="#ECFEFF" fill-opacity="0.44"/>
+  <rect class="portal-being-eye-highlight" x="291" y="238" width="12" height="43" rx="6" fill="#ECFEFF" fill-opacity="0.44"/>
+
+  <path d="M132 273C113 286 111 324 129 337" stroke="#67E8F9" stroke-opacity="0.2" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M380 273C399 286 401 324 383 337" stroke="#67E8F9" stroke-opacity="0.2" stroke-width="1.8" stroke-linecap="round"/>
+</svg>

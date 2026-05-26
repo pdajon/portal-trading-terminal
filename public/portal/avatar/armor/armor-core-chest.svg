@@ -1,0 +1,17 @@
+<svg width="512" height="512" viewBox="62 108 388 370" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Core Chest Shell armor layer">
+  <defs>
+    <linearGradient id="armorCoreGlass" x1="221" x2="291" y1="319" y2="397" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2E3A55" stop-opacity="0.36"/>
+      <stop offset="0.5" stop-color="#060913" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#151A2A" stop-opacity="0.32"/>
+    </linearGradient>
+    <linearGradient id="armorCoreEdge" x1="221" x2="291" y1="319" y2="397" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CF6" stop-opacity="0.36"/>
+      <stop offset="0.48" stop-color="#67E8F9" stop-opacity="0.58"/>
+      <stop offset="1" stop-color="#2563EB" stop-opacity="0.26"/>
+    </linearGradient>
+  </defs>
+  <path d="M256 319L291 336L286 377L256 397L226 377L221 336L256 319Z" fill="url(#armorCoreGlass)" stroke="url(#armorCoreEdge)" stroke-width="1.9"/>
+  <path d="M256 329V385" stroke="#67E8F9" stroke-linecap="round" stroke-opacity="0.46" stroke-width="1.6"/>
+  <path d="M241 350L256 337L271 350" stroke="#C4B5FD" stroke-linecap="round" stroke-opacity="0.38" stroke-width="1.5"/>
+</svg>

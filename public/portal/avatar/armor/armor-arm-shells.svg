@@ -1,0 +1,18 @@
+<svg width="512" height="512" viewBox="62 108 388 370" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Arm Shells armor layer">
+  <defs>
+    <linearGradient id="armorArmGlass" x1="108" x2="404" y1="278" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2E3A55" stop-opacity="0.36"/>
+      <stop offset="0.5" stop-color="#060913" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#151A2A" stop-opacity="0.32"/>
+    </linearGradient>
+    <linearGradient id="armorArmEdge" x1="108" x2="404" y1="278" y2="360" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CF6" stop-opacity="0.36"/>
+      <stop offset="0.48" stop-color="#67E8F9" stop-opacity="0.58"/>
+      <stop offset="1" stop-color="#2563EB" stop-opacity="0.26"/>
+    </linearGradient>
+  </defs>
+  <path d="M108 288C86 305 86 342 111 360C132 374 158 363 169 339C157 321 151 300 153 278C136 269 121 274 108 288Z" fill="url(#armorArmGlass)" stroke="url(#armorArmEdge)" stroke-width="1.8"/>
+  <path d="M404 288C426 305 426 342 401 360C380 374 354 363 343 339C355 321 361 300 359 278C376 269 391 274 404 288Z" fill="url(#armorArmGlass)" stroke="url(#armorArmEdge)" stroke-width="1.8"/>
+  <path d="M109 318C126 310 140 310 156 319" stroke="#8B5CF6" stroke-linecap="round" stroke-opacity="0.4" stroke-width="1.6"/>
+  <path d="M403 318C386 310 372 310 356 319" stroke="#8B5CF6" stroke-linecap="round" stroke-opacity="0.4" stroke-width="1.6"/>
+</svg>

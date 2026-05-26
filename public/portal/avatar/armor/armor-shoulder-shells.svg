@@ -1,0 +1,18 @@
+<svg width="512" height="512" viewBox="62 108 388 370" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Shoulder Shells armor layer">
+  <defs>
+    <linearGradient id="armorShoulderGlass" x1="116" x2="396" y1="176" y2="250" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2E3A55" stop-opacity="0.36"/>
+      <stop offset="0.5" stop-color="#060913" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#151A2A" stop-opacity="0.32"/>
+    </linearGradient>
+    <linearGradient id="armorShoulderEdge" x1="116" x2="396" y1="176" y2="250" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CF6" stop-opacity="0.36"/>
+      <stop offset="0.48" stop-color="#67E8F9" stop-opacity="0.58"/>
+      <stop offset="1" stop-color="#2563EB" stop-opacity="0.26"/>
+    </linearGradient>
+  </defs>
+  <path d="M116 250C127 210 158 185 202 176C190 200 183 225 184 250C161 239 138 238 116 250Z" fill="url(#armorShoulderGlass)" stroke="url(#armorShoulderEdge)" stroke-width="1.8"/>
+  <path d="M396 250C385 210 354 185 310 176C322 200 329 225 328 250C351 239 374 238 396 250Z" fill="url(#armorShoulderGlass)" stroke="url(#armorShoulderEdge)" stroke-width="1.8"/>
+  <path d="M149 219L170 207L190 224" stroke="#67E8F9" stroke-linecap="round" stroke-opacity="0.42" stroke-width="1.6"/>
+  <path d="M363 219L342 207L322 224" stroke="#67E8F9" stroke-linecap="round" stroke-opacity="0.42" stroke-width="1.6"/>
+</svg>

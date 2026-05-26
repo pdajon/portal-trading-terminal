@@ -1,0 +1,34 @@
+:root {
+  --font-sans: "IBM Plex Sans";
+  --font-value: "Space Grotesk";
+  --color-background: #02040a;
+  --color-foreground: #eef7ff;
+  --color-panel: #091523;
+  --color-line: rgba(176, 216, 255, 0.075);
+  --color-accent: #33f5ff;
+  --color-muted: #7d8ca3;
+  --color-success: #22c55e;
+  --color-danger: #ef4444;
+  --portal-void: #02040a;
+  --portal-deep-space: #050914;
+  --portal-panel: #091523;
+  --portal-glass: rgba(9, 19, 32, 0.78);
+  --portal-glass-soft: rgba(255, 255, 255, 0.026);
+  --portal-line: rgba(176, 216, 255, 0.075);
+  --portal-line-strong: rgba(165, 243, 252, 0.18);
+  --portal-module-border: rgba(165, 243, 252, 0.095);
+  --portal-module-bg: linear-gradient(180deg, rgba(8, 17, 29, 0.92), rgba(4, 10, 18, 0.94));
+  --portal-module-bg-horizontal: linear-gradient(90deg, rgba(8, 17, 29, 0.96), rgba(5, 12, 22, 0.94) 46%, rgba(3, 7, 14, 0.96));
+  --portal-module-shadow: 0 18px 46px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.055);
+  --portal-cyan: #33f5ff;
+  --portal-blue: #3b82f6;
+  --portal-purple: #8b5cf6;
+  --portal-amber: #f59e0b;
+  --portal-radius-surface: 7px;
+  --portal-radius-chip: var(--portal-radius-surface);
+  --portal-radius-control: var(--portal-radius-surface);
+  --portal-radius-panel: var(--portal-radius-surface);
+  --portal-radius-modal: var(--portal-radius-surface);
+  --portal-shadow-slab: 0 22px 58px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --portal-shadow-control: inset 0 1px 0 rgba(255, 255, 255, 0.045);
+}

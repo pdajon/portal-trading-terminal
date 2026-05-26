@@ -1,0 +1,61 @@
+# Dependencies
+node_modules
+node_modules/
+node_modules.*
+node_modules.*/
+
+# Nested repositories
+portal-trading-site/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p8
+*.p12
+id_rsa*
+id_ed25519*
+
+# Next.js and build output
+.next/
+.next-*/
+out/
+tsconfig.tsbuildinfo
+
+# Local Portal/Codex/runtime state
+.portal/
+.portal-dev/
+.portal-fileprovider-backups/
+.portal-next*
+.portal-next*/
+.playwright-cli/
+.superpowers/
+.venv*
+.venv*/
+/Users/
+tmp/
+test-results/
+output/
+
+# Local screenshots and generated media at repo root
+/*.png
+/*.jpg
+/*.jpeg
+/*.webp
+/*.gif
+/*.mp4
+/*.webm
+
+# OS/editor noise
+.DS_Store
+
+# Local recovery copies
+*.dataless-bak-*
+*.fileprovider-broken-*
+*.workspace-archive-*
+
+# Python cache
+__pycache__/
+*.pyc
